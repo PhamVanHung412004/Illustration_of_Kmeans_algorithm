@@ -3,12 +3,15 @@ print("scussflully")
 from random import randint
 from sklearn.cluster import KMeans
 from init_class import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum,draw_rect_backgroud,screen
+from scipy.spatial.distance import cdist
+import numpy as np
 
 colors = COLORS()
 rect_black = points_black_rect()
 rect_white = points_white_circle()
 COLORS_LABELS = colors_init(colors)
 const = int(1e4)
+
 
 # def solve():
 class Draw_point:
@@ -56,9 +59,9 @@ class Name_button:
         screen.blit(self.random,(1250,145))
         screen.blit(self.algorithm,(1235,265))
         screen.blit(self.error,(1235,330))
-        screen.blit(self.reset,(1270,385))
         screen.blit(self.run_button,(1280,205))
-
+        screen.blit(self.reset,(1270,385))
+        
 class Draw_clusters:
     def __init__(self,cluster : list, COLOR : dict) -> None:
         self.cluster = cluster
@@ -71,9 +74,22 @@ class Draw_clusters:
             # pygame.draw.circle(screen,COLORS[i],(clusters[i][0] + 50, 600 - clusters[i][1]),8)
             pygame.draw.rect(screen,COLORS[i],(clusters[i][0] + 50, 600 - clusters[i][1],15,15))
 
+
 def cacl_point_mid(x : float ,y : float, cnt : int) -> float:
     value = [x / cnt, y / cnt]
     return value
+
+N = 500
+cov = [[1, 0], [0, 1]]
+def init_clusters(points : list, k : int) -> np.ndarray:
+    arr_tmp = []
+    for i in points:
+        value_tmp = np.random.multivariate_normal(i, cov, N)
+        arr_tmp.append(value_tmp)
+    arr_tmp = tuple(arr_tmp)
+
+    X = np.concatenate(arr_tmp, axis = 0)
+    return X[np.random.choice(X.shape[0], k, replace=False)]
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -94,6 +110,9 @@ font = pygame.font.SysFont('sans', 20)
 font1 = pygame.font.SysFont('sans', 30)
 font2 = pygame.font.SysFont('sans', 40)
 font3 = pygame.font.SysFont('sans', 50) 
+step = 0
+
+check_labels = []
 
 while runing:
     clock.tick(60)
@@ -163,6 +182,10 @@ while runing:
     rect = draw_rect_backgroud(1225,380,170,50,colors)
     rect.show()    
 
+    # #button step
+    # rect = draw_rect_backgroud(1225,440,170,50,colors)
+    # rect.show() 
+
     #Event mouse
     for event in pygame.event.get():
         #Button quit
@@ -190,19 +213,13 @@ while runing:
             
             #button random
             if (1225 <= x_mouse <= 1225 + 170 and 140 <= y_mouse <= 140 + 50):
-                T = k
-                clusters = []
-                test_mid = []
-                while(T > 0):
-                    cluster = [randint(50,1110) - 50, abs(randint(50,600) - 600)]
-                    clusters.append(cluster)
-                    test_mid.append(cluster)
-                    T -= 1
+                clusters = init_clusters(points,k)
 
             #button run   
             if (1225 <= x_mouse <= 1225 + 170 and 200 <= y_mouse <= 200 + 50):
                 try:
                     print("Run")
+                    # step += 1
                     labels = []
                     labels_values = []
                     prefix_sum_x = []
@@ -214,8 +231,8 @@ while runing:
                         continue
                     
                     (labels_values, labels, index_distance) = search_and_distance(points,clusters)
-                    
-                    #=> O(n^2)
+
+                    # => O(n^2)
                     labels_values.sort() # O(nlog(n))
                     index_distance.sort() # O(nlog(n))
                     value_init = labels_values[0][1]
@@ -317,6 +334,7 @@ while runing:
             #     continue
     k_button = font1.render("n_clusters = " + str(k), True, colors.BLACK)         
     error_button = font.render("ERROR = "  + str(int(error)), True, colors.BLACK)
+    # error_step = font1.render("STEP = "  + str(int(step)), True, colors.BLACK)
     
     name_button = Name_button(random_button,
                               algorithm_button,
