@@ -1,31 +1,42 @@
-from init_class import pygame,COLORS
+from init_class import pygame,COLORS, prefix_sum,search_and_distance,init_clusters,N
 from sklearn.cluster import KMeans
 import cv2
 import os
 import numpy as np
-
-#test
+import glob
+# Dir test
 path_test = "img"
 
 file_img_test = "list_img/"
 list_test = os.listdir(path_test)
 
 stt_img = 1
+
+def remove_image(folder_path : str) -> None:
+    image_extensions = ["*.jpg", "*.png", "*.bmp", "*.jpeg", "*.tiff"]
+    for ext in image_extensions:
+        for file in glob.glob(os.path.join(folder_path, ext)):
+            os.remove(file)
+            print(f"Deleted: {file}")
+    print("remove succesfully")
+    
 def train_model(index : int , k : int):
     image = cv2.imread(path_test + "/" + list_test[index - 1])
     width = image.shape[0]
     height = image.shape[1]
-    image = image.reshape(width*height,3)
-    kmeans = KMeans(n_clusters=k).fit(image)
 
-    labels = kmeans.predict(image)
+    #3D -> 2D
+    points = image.reshape(width*height,3)
+
+    #model Kmeans
+    kmeans = KMeans(n_clusters=k).fit(points)
+    labels = kmeans.predict(points)
     clusters = kmeans.cluster_centers_
     labels_reshaped = labels.reshape(width, height)
     img2 = clusters[labels_reshaped]
-    img2 = list(img2)
-    yield img2
+    return img2
 
-def format_array(arr):
+def format_array(arr : list) -> int:
     return arr[len(arr) - 1]
 
 file_file = os.listdir("img")
@@ -154,6 +165,7 @@ while runing:
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            remove_image(path2)
             runing = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -169,17 +181,7 @@ while runing:
             elif (1225 <= x_mouse <= 1225 + 170 and 140 <= y_mouse <= 140 + 50):
                 #format arr
                 img2 = train_model(index,k)
-                print(type(img2))
-                img2 = list(img2)                
-                img2 = format_array(img2)
-                img2 = np.array(img2)
-
-                name_img = list_test[index - 1]
-                index_test = name_img.index(".")                
-                cv2.imwrite(file_img_test + str(stt_img) + name_img[index_test:], img2)
-                img_ouput.append(str(cnt) + name_img[index_test:])
-                cnt += 1            
-                stt_img += 1
+                cv2.imwrite(path2 + "/" + "img" + str(index) + ".jpg",img2)
                 run_kmeans = True
                 print("Run")
 
@@ -202,21 +204,24 @@ while runing:
                 run_img = False
                 print("- menu")
             else:
+                print("succesfully")
                 ...
-    if (run_img):
-        if (index != 0 and k != -1):
-            image = pygame.image.load(path1 + "/" + file_file[index - 1])
-            image = pygame.transform.scale(image, shape)
-            screen.blit(image, (60, 80))            
-        else:
-            pass
-    if (run_kmeans):
-        image1 = pygame.image.load(path2 + "/" + img_ouput[len(img_ouput) - 1])
-        image1 = pygame.transform.scale(image1, shape)
-        screen.blit(image1,(665, 80))
-    else:
-        pass
-     
+    try:
+        if (run_img):
+            if (index != 0 and k != -1):
+                image = pygame.image.load(path1 + "/" + file_file[index - 1])
+                image = pygame.transform.scale(image, shape)
+                screen.blit(image, (60, 80))            
+            else:
+                print("Error")
+        if (run_kmeans):
+            img_ouput = os.listdir(path2)
+            image1 = pygame.image.load(path2 + "/" + img_ouput[-1])
+            image1 = pygame.transform.scale(image1, shape)
+            screen.blit(image1,(665, 80))
+    except Exception as e:
+        if (runing == True):
+            print(f": {e}")
     button_selection = font1.render(str(index) , True, colors.BLACK)
     button_n_clusters = font1.render("n_clusters = " + str(k) , True, colors.BLACK)
     show_text = Text(button_n_clusters,

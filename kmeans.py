@@ -1,8 +1,8 @@
-# import pygame
+import pygame
 print("scussflully")
 from random import randint
 from sklearn.cluster import KMeans
-from init_class import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum,draw_rect_backgroud,screen
+from init_class import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum,draw_rect_backgroud,screen,init_clusters
 from scipy.spatial.distance import cdist
 import numpy as np
 
@@ -12,8 +12,8 @@ rect_white = points_white_circle()
 COLORS_LABELS = colors_init(colors)
 const = int(1e4)
 
+cov = [[1,0],[0,1]] 
 
-# def solve():
 class Draw_point:
     def __init__(self,point: int, WHITE : tuple,BLACK: tuple ,label : list, COlOR : dict) -> None:
         self.point = point
@@ -78,18 +78,6 @@ class Draw_clusters:
 def cacl_point_mid(x : float ,y : float, cnt : int) -> float:
     value = [x / cnt, y / cnt]
     return value
-
-N = 500
-cov = [[1, 0], [0, 1]]
-def init_clusters(points : list, k : int) -> np.ndarray:
-    arr_tmp = []
-    for i in points:
-        value_tmp = np.random.multivariate_normal(i, cov, N)
-        arr_tmp.append(value_tmp)
-    arr_tmp = tuple(arr_tmp)
-
-    X = np.concatenate(arr_tmp, axis = 0)
-    return X[np.random.choice(X.shape[0], k, replace=False)]
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -182,10 +170,6 @@ while runing:
     rect = draw_rect_backgroud(1225,380,170,50,colors)
     rect.show()    
 
-    # #button step
-    # rect = draw_rect_backgroud(1225,440,170,50,colors)
-    # rect.show() 
-
     #Event mouse
     for event in pygame.event.get():
         #Button quit
@@ -213,7 +197,7 @@ while runing:
             
             #button random
             if (1225 <= x_mouse <= 1225 + 170 and 140 <= y_mouse <= 140 + 50):
-                clusters = init_clusters(points,k)
+                clusters = init_clusters(points, k, cov)
 
             #button run   
             if (1225 <= x_mouse <= 1225 + 170 and 200 <= y_mouse <= 200 + 50):
@@ -324,17 +308,8 @@ while runing:
                     print("Error")
                     break
 
-            #button IMG
-            # elif (1225 <= x_mouse <= 1225 + 170 and 440 <= y_mouse <= 440 + 50):
-            #     import img_kmeans
-            #     print("IMG")
-
-            # else:
-            #     print("Error")
-            #     continue
     k_button = font1.render("n_clusters = " + str(k), True, colors.BLACK)         
     error_button = font.render("ERROR = "  + str(int(error)), True, colors.BLACK)
-    # error_step = font1.render("STEP = "  + str(int(step)), True, colors.BLACK)
     
     name_button = Name_button(random_button,
                               algorithm_button,
@@ -354,3 +329,5 @@ while runing:
     
     pygame.display.flip()
 pygame.quit()
+
+    

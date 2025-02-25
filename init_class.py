@@ -1,5 +1,6 @@
 import pygame
 from math import sqrt
+import numpy as np
 const_int_mod = int(10**4)
 height = 1400
 witd = 750
@@ -77,22 +78,22 @@ class draw_rect_backgroud:
         pygame.draw.rect(screen,self.colors.WHITE,(self.x + 5, self.y + 5, self.w - 10, self.h - 10))
 
 
-def points_black_rect() -> list:
+def points_black_rect() -> list[tuple]:
     rect_black = [(50,610,100,40),(50,655,100,40),(165,610,200,50),(375,610,200,50),(585,610,200,50),(790,610,200,50),(1000,610,90,50)]
     return rect_black
 
-def points_white_circle() -> list:
+def points_white_circle() -> list[tuple]:
     rect_white = [(55,615,90,30),(55,660,40,30),(170,615,190,40),(380,615,190,40),(590,615,190,40),(795,615,190,40),(1005,615,80,40)]
     return rect_white
 
-def Linear_Search(arr : list , x : int) -> list:
+def Linear_Search(arr : list , x : int) -> list[int]:
     list_index = []
     for i in range(len(arr)):
         if (arr[i][0] == x):
             list_index.append(arr[i][1])
     return list_index
 
-def Binary_Search(arr : list , x : int) -> int:
+def Binary_Search(arr : list[int], x : int) -> int:
     ans = -1
     r = 0
     l = len(arr) - 1
@@ -106,7 +107,7 @@ def Binary_Search(arr : list , x : int) -> int:
             r = mid - 1
     return ans
 
-def check_value(arr1 : list , arr2 : list) -> int:
+def check_value(arr1 : list[int] , arr2 : list[int]) -> int:
     label = -1
     for i in range(len(arr1)):
         min_distance = 10**9
@@ -117,7 +118,7 @@ def check_value(arr1 : list , arr2 : list) -> int:
     if (label != -1):
         return label
 
-def array_counts(arr : list , K_NN : int) -> tuple:
+def array_counts(arr : list[int], K_NN : int) -> tuple:
     counts = [0]*const_int_mod
     labels = []
     check = set()
@@ -139,7 +140,7 @@ def array_counts(arr : list , K_NN : int) -> tuple:
     return (begin,end,counts,distance_labels)
 
 
-def lower_bound(arr : list , x : int) -> int:
+def lower_bound(arr : list[int], x : int) -> int:
     ans = -1
     l = 0
     r = len(arr) - 1
@@ -179,7 +180,7 @@ def colors_init(colors : COLORS) -> dict:
                 7 : colors.GRASS}
     return colorss
 
-def upper_bound(arr : list , x : int) -> int:
+def upper_bound(arr : list[int] , x : int) -> int:
     ans = -1
     l = 0
     r = len(arr) - 1
@@ -205,10 +206,10 @@ def upper_bound(arr : list , x : int) -> int:
                 r = mid - 1
     return ans
 
-def calc_distance(p1 : list , p2 : list) -> float:
+def calc_distance(p1 : list[int] , p2 : list[int]) -> float:
     return sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
-def search_and_distance(points : list , clusters : list) -> tuple:
+def search_and_distance(points : list[int], clusters : list[int]) -> tuple:
     labels_values = []
     labels = []
     index_distance = []
@@ -226,9 +227,26 @@ def search_and_distance(points : list , clusters : list) -> tuple:
         index_distance.append([index_labels,min_points[index_labels]])
     return (labels_values, labels, index_distance)
 
-def prefix_sum(arr : list) -> list:
+def prefix_sum(arr : list[int]) -> list[int]:
     arr_new = [0]*len(arr)
     arr_new[0] = arr[0][1]
     for i in range(1,len(arr)):
         arr_new[i] = arr_new[i - 1] + arr[i][1]
     return arr_new      
+
+N = 10
+def init_clusters(points : list[list], k : int, cov : list[list]) -> np.ndarray:
+    print("init clusters")
+    arlistmp = []
+    arr_tmp = []
+    for i in points:
+        print(i)
+        value_tmp = np.random.multivariate_normal(i, cov, N)
+        arr_tmp.append(value_tmp)
+    arr_tmp = tuple(arr_tmp)
+    # data = np.random.multivariate_normal(mean, cov, 100)
+
+    X = np.concatenate(arr_tmp, axis = 0)
+    print("X = ",X)
+    return X[np.random.choice(X.shape[0], k, replace=False)]
+
