@@ -1,4 +1,4 @@
-from init_class import pygame,COLORS, prefix_sum,search_and_distance,init_clusters,N
+from algorithm import pygame,COLORS, prefix_sum,search_and_distance,init_clusters,N
 from sklearn.cluster import KMeans
 import cv2
 import os
@@ -6,6 +6,9 @@ import numpy as np
 import glob
 # Dir test
 path_test = "img"
+
+output_dir = "list_img"
+os.makedirs(output_dir, exist_ok=True)
 
 file_img_test = "list_img/"
 list_test = os.listdir(path_test)

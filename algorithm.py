@@ -23,11 +23,19 @@ class COLORS:
         self.GRASS = (55,155,65)
 
 class Draw_ox_oy:
-    def __init__(self,ox1 : int, ox2 : int ,ox3 : int, ox4 : int , oy1 : int,oy2 : int,oy3 : int,oy4 : int, 
-                 BLACK : tuple,
-                 up : pygame.surface.Surface,
-                 ngang : pygame.surface.Surface,
-                 screen : pygame.surface.Surface) -> None:
+    def __init__(self,
+        ox1: float = None,
+        ox2: float = None,
+        ox3: float = None, 
+        ox4: float = None,
+        oy1: float = None,
+        oy2: float = None,
+        oy3: float = None,
+        oy4: float = None,
+        BLACK: tuple[int | float | list] = None,
+        up: pygame.surface.Surface = None, 
+        ngang: pygame.surface.Surface = None,
+        screen: pygame.surface.Surface = None) -> None:
         
         self.ox1 = ox1
         self.ox2 = ox2
@@ -41,7 +49,6 @@ class Draw_ox_oy:
         self.up = up
         self.ngang = ngang
         self.screen = screen
-
     def show(self) -> None:
         pygame.draw.line(self.screen,self.BLACK,(self.ox1,self.ox2),(self.ox3,self.ox4),3)
         pygame.draw.line(self.screen,self.BLACK,(self.oy1,self.oy2),(self.oy3,self.oy4),3)    
@@ -49,24 +56,30 @@ class Draw_ox_oy:
         self.screen.blit(self.ngang,(1100,588))
 
 class Show_mouse:
-    def __init__(self,x_mouse : float , 
-                 y_mouse : float ,
-                 font_mouse : pygame.font.Font,
-                 BLACK : tuple,
-                 screen : pygame.surface.Surface) -> None:
-                 
+    def __init__(self,
+        x_mouse: float = None,
+        y_mouse: float = None,
+        font_mouse: float = None,
+        BLACK: float = None,
+        screen: pygame.surface.Surface = None) -> None:
+
         self.x_mouse = x_mouse
         self.y_mouse = y_mouse
         self.font_mouse = font_mouse
         self.BLACK = BLACK    
         self.screen = screen
-
     def show(self) -> None:
         text_mouse = self.font_mouse.render("(" + "x = " + str((self.x_mouse - 50)) + "," + "y = " + str(abs(self.y_mouse-600)) + ")",True,self.BLACK)
         self.screen.blit(text_mouse, (self.x_mouse + 10, self.y_mouse))
 
 class draw_rect_backgroud:
-    def __init__(self, x : int, y : int, w : int, h : int, colors : COLORS) -> None:
+    def __init__(self,
+        x: float = None,
+        y: float = None,
+        w: float = None,
+        h: float = None,
+        colors : COLORS() = None) -> None:
+
         self.x = x
         self.y = y
         self.w = w
@@ -86,14 +99,14 @@ def points_white_circle() -> list[tuple]:
     rect_white = [(55,615,90,30),(55,660,40,30),(170,615,190,40),(380,615,190,40),(590,615,190,40),(795,615,190,40),(1005,615,80,40)]
     return rect_white
 
-def Linear_Search(arr : list , x : int) -> list[int]:
+def Linear_Search(arr: list[int | float | list] = None,x: int = None) -> list[int]:
     list_index = []
     for i in range(len(arr)):
         if (arr[i][0] == x):
             list_index.append(arr[i][1])
     return list_index
 
-def Binary_Search(arr : list[int], x : int) -> int:
+def Binary_Search(arr: list[int | float] = None,x: int = None) -> int:
     ans = -1
     r = 0
     l = len(arr) - 1
@@ -107,7 +120,7 @@ def Binary_Search(arr : list[int], x : int) -> int:
             r = mid - 1
     return ans
 
-def check_value(arr1 : list[int] , arr2 : list[int]) -> int:
+def check_value(arr1: list[int | float | list] = None, arr2: list[int | float] = None) -> int:
     label = -1
     for i in range(len(arr1)):
         min_distance = 10**9
@@ -118,7 +131,7 @@ def check_value(arr1 : list[int] , arr2 : list[int]) -> int:
     if (label != -1):
         return label
 
-def array_counts(arr : list[int], K_NN : int) -> tuple:
+def array_counts(arr: list[int | float | list] = None, K_NN: int = None) -> tuple[int | list[int]]:
     counts = [0]*const_int_mod
     labels = []
     check = set()
@@ -139,8 +152,7 @@ def array_counts(arr : list[int], K_NN : int) -> tuple:
 
     return (begin,end,counts,distance_labels)
 
-
-def lower_bound(arr : list[int], x : int) -> int:
+def lower_bound(arr: list[float | int | float] = None,x: int = None) -> int:
     ans = -1
     l = 0
     r = len(arr) - 1
@@ -166,10 +178,8 @@ def lower_bound(arr : list[int], x : int) -> int:
                 r = mid - 1
     return ans
 
-
 colors = COLORS()
-
-def colors_init(colors : COLORS) -> dict:
+def colors_init(colors: COLORS = None) -> dict:
     colorss = {0 : colors.GREEN,
                 1 : colors.BLUE,
                 2 : colors.YELLOW,
@@ -180,7 +190,7 @@ def colors_init(colors : COLORS) -> dict:
                 7 : colors.GRASS}
     return colorss
 
-def upper_bound(arr : list[int] , x : int) -> int:
+def upper_bound(arr: list[float | int | list] = None, x: int = None) -> int:
     ans = -1
     l = 0
     r = len(arr) - 1
@@ -206,10 +216,11 @@ def upper_bound(arr : list[int] , x : int) -> int:
                 r = mid - 1
     return ans
 
-def calc_distance(p1 : list[int] , p2 : list[int]) -> float:
+
+def calc_distance(p1 : list[int | float] = None, p2 : list[int | float] = None) -> float:
     return sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
-def search_and_distance(points : list[int], clusters : list[int]) -> tuple:
+def search_and_distance(points : list[int | float] = None, clusters : list[int | float] = None) -> tuple:
     labels_values = []
     labels = []
     index_distance = []
@@ -227,7 +238,7 @@ def search_and_distance(points : list[int], clusters : list[int]) -> tuple:
         index_distance.append([index_labels,min_points[index_labels]])
     return (labels_values, labels, index_distance)
 
-def prefix_sum(arr : list[int]) -> list[int]:
+def prefix_sum(arr : list[int | float] = None) -> list[int | float]:
     arr_new = [0]*len(arr)
     arr_new[0] = arr[0][1]
     for i in range(1,len(arr)):
@@ -235,7 +246,7 @@ def prefix_sum(arr : list[int]) -> list[int]:
     return arr_new      
 
 N = 10
-def init_clusters(points : list[list], k : int, cov : list[list]) -> np.ndarray:
+def init_clusters(points : list[list] = None, k : int = None, cov : list[list] = None) -> np.ndarray:
     print("init clusters")
     arlistmp = []
     arr_tmp = []

@@ -2,7 +2,7 @@ import pygame
 print("scussflully")
 from random import randint
 from sklearn.cluster import KMeans
-from init_class import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum,draw_rect_backgroud,screen,init_clusters
+from algorithm import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum,draw_rect_backgroud,screen,init_clusters
 from scipy.spatial.distance import cdist
 import numpy as np
 
