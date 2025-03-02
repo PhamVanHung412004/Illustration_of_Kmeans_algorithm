@@ -5,9 +5,6 @@ import numpy as np
 import glob
 from algorithm import pygame
 from algorithm import COLORS 
-from algorithm import prefix_sum
-from algorithm import search_and_distance
-from algorithm import init_clusters
 
 path_test = "img"
 output_dir = "list_img"
