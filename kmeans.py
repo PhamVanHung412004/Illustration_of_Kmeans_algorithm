@@ -1,10 +1,22 @@
 import pygame
-print("scussflully")
 from random import randint
 from sklearn.cluster import KMeans
-from algorithm import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum,draw_rect_backgroud,screen,init_clusters
 from scipy.spatial.distance import cdist
 import numpy as np
+from algorithm import Draw_ox_oy
+from algorithm import Show_mouse
+from algorithm import pygame
+from algorithm import COLORS
+from algorithm import upper_bound
+from algorithm import lower_bound
+from algorithm import colors_init
+from algorithm import points_black_rect
+from algorithm import points_white_circle
+from algorithm import search_and_distance
+from algorithm import prefix_sum
+from algorithm import draw_rect_backgroud
+from algorithm import screen 
+from algorithm import init_clusters
 
 colors = COLORS()
 rect_black = points_black_rect()

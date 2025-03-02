@@ -251,13 +251,11 @@ def init_clusters(points : list[list] = None, k : int = None, cov : list[list] =
     arlistmp = []
     arr_tmp = []
     for i in points:
-        print(i)
         value_tmp = np.random.multivariate_normal(i, cov, N)
         arr_tmp.append(value_tmp)
     arr_tmp = tuple(arr_tmp)
     # data = np.random.multivariate_normal(mean, cov, 100)
 
     X = np.concatenate(arr_tmp, axis = 0)
-    print("X = ",X)
     return X[np.random.choice(X.shape[0], k, replace=False)]
 
