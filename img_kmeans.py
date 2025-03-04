@@ -5,6 +5,7 @@ import numpy as np
 import glob
 from algorithm import pygame
 from algorithm import COLORS 
+from algorithm import Draw_rect_backgroud 
 
 path_test = "img"
 output_dir = "list_img"
@@ -44,17 +45,6 @@ def format_array(arr : list) -> int:
 
 file_file = os.listdir("img")
 
-class draw_rect_backgroud:
-    def __init__(self,x : int , y : int, w : int, h : int, colors : dict) -> None:
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
-        self.colors = colors
-
-    def show(self) -> None:
-        pygame.draw.rect(screen,self.colors.BLACK,(self.x,self.y, self.w, self.h))
-        pygame.draw.rect(screen,self.colors.WHITE,(self.x + 5, self.y + 5, self.w - 10, self.h - 10))       
 class Text:
     def __init__(self,
                  button_n_clusters : pygame.surface.Surface,
@@ -122,41 +112,41 @@ while runing:
     x_mouse , y_mouse = pygame.mouse.get_pos()
 
     #Backgroud
-    rect = draw_rect_backgroud(20,20,1200,700,colors)
+    rect = Draw_rect_backgroud(20,20,1200,700,colors)
     rect.show()
 
    
     #n_clusters
-    rect = draw_rect_backgroud(1225,20,170,50,colors)
+    rect = Draw_rect_backgroud(1225,20,170,50,colors)
     rect.show()
 
     # + -
-    rect = draw_rect_backgroud(1225,80,80,50,colors)
+    rect = Draw_rect_backgroud(1225,80,80,50,colors)
     rect.show()
-    rect = draw_rect_backgroud(1225 + 80 + 10,80,80,50,colors)
+    rect = Draw_rect_backgroud(1225 + 80 + 10,80,80,50,colors)
     rect.show()
 
    
     #button run
-    rect = draw_rect_backgroud(1225,140,170,50,colors)
+    rect = Draw_rect_backgroud(1225,140,170,50,colors)
     rect.show()
 
     #button show
-    rect = draw_rect_backgroud(1225,200,170,50,colors)
+    rect = Draw_rect_backgroud(1225,200,170,50,colors)
     rect.show()
     
     #button selection
-    rect = draw_rect_backgroud(1225,260,50,50,colors)
+    rect = Draw_rect_backgroud(1225,260,50,50,colors)
     rect.show()
     #+
-    rect = draw_rect_backgroud(1225 + 60,260,50,50,colors)
+    rect = Draw_rect_backgroud(1225 + 60,260,50,50,colors)
     rect.show()
     #-
-    rect = draw_rect_backgroud(1225 + 60 + 50,260,50,50,colors)
+    rect = Draw_rect_backgroud(1225 + 60 + 50,260,50,50,colors)
     rect.show()
 
     #Menu
-    rect = draw_rect_backgroud(1225,320,170,400,colors)
+    rect = Draw_rect_backgroud(1225,320,170,400,colors)
     rect.show()
     
     button_plus = font2.render("+" , True, colors.BLACK)

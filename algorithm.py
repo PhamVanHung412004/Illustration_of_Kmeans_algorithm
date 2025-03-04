@@ -72,13 +72,13 @@ class Show_mouse:
         text_mouse = self.font_mouse.render("(" + "x = " + str((self.x_mouse - 50)) + "," + "y = " + str(abs(self.y_mouse-600)) + ")",True,self.BLACK)
         self.screen.blit(text_mouse, (self.x_mouse + 10, self.y_mouse))
 
-class draw_rect_backgroud:
+class Draw_rect_backgroud:
     def __init__(self,
         x: float = None,
         y: float = None,
         w: float = None,
         h: float = None,
-        colors : COLORS() = None) -> None:
+        colors : COLORS() = None) -> None: # type: ignore
 
         self.x = x
         self.y = y
